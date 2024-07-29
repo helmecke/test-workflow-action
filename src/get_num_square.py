@@ -10,5 +10,10 @@ if num:
 else:
     num = 1
 
-# to set output, print to shell in following syntax
-print(f"::set-output name=num_squared::{num ** 2}")
+output_env = os.getenv("GITHUB_OUTPUT")
+
+if output_env is None:
+    raise OSError("Environment file not found")
+
+with open(output_env, "a") as gh_output:
+    gh_output.write(f"NUM_SQUARED={num ** 2}\n")
